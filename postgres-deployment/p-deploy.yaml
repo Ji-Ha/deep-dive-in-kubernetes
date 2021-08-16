@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-claim
+spec:
+  storageClassName: postgres-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-server-deploy
+  labels: 
+    app: postgres-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: postgres-server
+  template:
+    metadata:
+      name: rplicas
+      labels:
+        app: postgres-server
+    spec:
+      volumes:
+        - name: postgres-server-data
+          persistentVolumeClaim:
+            claimName: postgres-claim
+      containers:
+        - name: postgresql
+          image: postgres
+          ports: 
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: /mnt/data
+              name: postgres-server-data
+          env:
+            - name: POSTGRES_USER
+              value: jihwan
+            - name: POSTGRES_DB
+              value: grigo
+            - name: POSTGRES_PASSWORD
+              value: "12345"
