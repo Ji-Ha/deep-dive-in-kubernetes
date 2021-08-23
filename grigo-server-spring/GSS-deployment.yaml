@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grigo-server-spring
+spec:
+  replicas: 3
+  selector: 
+    matchLabels:
+      app: back-end
+  template:
+    metadata:
+      name: spring-pod
+      labels:
+        app: back-end
+    spec:
+      containers:
+      - name: spring
+        image: xodhkd36/grigo-server
+        ports:
+        - containerPort: 8080
+    
