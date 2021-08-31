@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: crawler
+  name: crawler-all
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crawler
+  template:
+    metadata:
+      labels:
+        app: crawler
+      name: crawler-pod
+    spec:
+      containers:
+        - name: crawler-server
+          image: xodhkd36/crawler
+          ports:
+            - containerPort: 8100
+          env:
+            - name: SECRECTKEY
+              value: "grigo"
+            - name: HOST
+              value: "10.103.119.243"
+            - name: USERNAME
+              value: "jihwan"
+            - name: PASSWORD
+              value: "12345"
+            - name: DATABASE
+              value: "grigo"
+            - name: PORT
+              value: "8100"
+
+        - name: crawler-parser
+          image: xodhkd36/parser
+          ports:
+            - containerPort: 8101
+          env:
+            - name: BASEURL
+              value: "localhost:8100"
