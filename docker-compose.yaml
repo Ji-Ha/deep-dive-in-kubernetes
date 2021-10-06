@@ -1,0 +1,27 @@
+version: 1
+services: 
+  mongodb:
+    image: mongo
+    restart: always
+    container_name: yapp-mongo
+    ports:
+      - “5431:27017”
+
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: “{$DB_USER_ID}”
+      MONGO_INITDB_ROOT_PASSWORD: “{$DB_PASSWORD}”
+    volumes: 
+      - "/var/lib/docker/volumes/mongo-db/_data"
+
+  postgres:
+    image:postgres
+    restart: always
+    container_name: yapp-postgres
+    ports:
+      - “5432:5432”
+
+    environment:
+      POSTGRES_USER: “{$DB_USER_ID}”
+      POSTGRES_PASSWORD: “{$DB_PASSWORD}”
+    volumes:
+      - “/var/lib/docker/volumes/postgres-db/_data”
